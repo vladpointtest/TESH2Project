@@ -20,5 +20,6 @@ namespace TESH2Project.Data
         }
 
         public System.Data.Entity.DbSet<TESH2Project.Models.Datos> Datos { get; set; }
+        public System.Data.Entity.DbSet<TESH2Project.Models.Empresas> Empresas { get; set; }
     }
 }

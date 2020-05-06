@@ -18,7 +18,8 @@ namespace TESH2Project.Controllers
         // GET: Datos
         public ActionResult Index()
         {
-            return View(db.Datos.ToList());
+            var datos = db.Datos.Include(empresas => empresas.Empresa);
+            return View(datos.ToList());
         }
 
         // GET: Datos/Details/5
@@ -29,6 +30,7 @@ namespace TESH2Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Datos datos = db.Datos.Find(id);
+            datos.Empresa = db.Empresas.Find(datos.EmpresaId);
             if (datos == null)
             {
                 return HttpNotFound();
@@ -39,6 +41,7 @@ namespace TESH2Project.Controllers
         // GET: Datos/Create
         public ActionResult Create()
         {
+            ViewBag.EmpresaId = new SelectList(db.Empresas, "Id","Alias_Empresa");
             return View();
         }
 
@@ -47,7 +50,7 @@ namespace TESH2Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nombre,Compania,Empleados")] Datos datos)
+        public ActionResult Create([Bind(Include = "Id,Nombre,EmpresaId,Empleados,Password")] Datos datos)
         {
             if (ModelState.IsValid)
             {
@@ -55,7 +58,7 @@ namespace TESH2Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.EmpresaId = new SelectList(db.Empresas, "Id", "Alias_Empresa", datos.EmpresaId);
             return View(datos);
         }
 
@@ -67,10 +70,12 @@ namespace TESH2Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Datos datos = db.Datos.Find(id);
+            //datos.Empresa = db.Empresas.Find(datos.EmpresaId);
             if (datos == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.EmpresaId = new SelectList(db.Empresas, "Id", "Alias_Empresa", datos.EmpresaId);
             return View(datos);
         }
 
@@ -79,7 +84,7 @@ namespace TESH2Project.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nombre,Compania,Empleados")] Datos datos)
+        public ActionResult Edit([Bind(Include = "Id,Nombre,EmpresaId,Empleados, Password")] Datos datos)
         {
             if (ModelState.IsValid)
             {
@@ -87,6 +92,7 @@ namespace TESH2Project.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.EmpresaId = new SelectList(db.Empresas, "Id", "Alias_Empresa", datos.EmpresaId);
             return View(datos);
         }
 
@@ -98,6 +104,7 @@ namespace TESH2Project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Datos datos = db.Datos.Find(id);
+            datos.Empresa = db.Empresas.Find(datos.EmpresaId);
             if (datos == null)
             {
                 return HttpNotFound();

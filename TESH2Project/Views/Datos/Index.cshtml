@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.Nombre)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Compania)
+            @Html.DisplayNameFor(model => model.EmpresaId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Empleados)
@@ -30,7 +30,7 @@
             @Html.DisplayFor(modelItem => item.Nombre)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Compania)
+            @Html.DisplayFor(modelItem => item.Empresa.Nombre_Empresa)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Empleados)
